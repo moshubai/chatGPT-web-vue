@@ -58,7 +58,7 @@ function handleRegenerate() {
 </script>
 
 <template>
-  <div class="flex w-full overflow-hidden p-4" :style="{ background: (inversion ? '#fff' : '#f5f5f5') }">
+  <div class="flex w-full overflow-hidden p-4" :class="[inversion ? 'bg-[#e6f3f3] dark:bg-[#434654]' : 'bg-[#f4f6f8] dark:bg-[#1e1e20]']">
     <div
       class="flex items-center justify-center flex-shrink-0 h-8 overflow-hidden rounded-full basis-8 mr-2"
     >
