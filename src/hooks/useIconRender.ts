@@ -2,18 +2,18 @@ import { h } from 'vue'
 import { SvgIcon } from '@/components/common'
 
 export const useIconRender = () => {
-  interface IconConfig {
-    icon?: string
-    color?: string
-    fontSize?: number
-  }
+  // interface IconConfig {
+  //   icon?: string
+  //   color?: string
+  //   fontSize?: number
+  // }
 
   interface IconStyle {
     color?: string
     fontSize?: string
   }
 
-  const iconRender = (config: IconConfig) => {
+  const iconRender = (config: any) => {
     const { color, fontSize, icon } = config
 
     const style: IconStyle = {}
