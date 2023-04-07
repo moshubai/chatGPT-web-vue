@@ -1,5 +1,6 @@
 # build front-end
-FROM node:lts-alpine AS builder
+# FROM node:lts-alpine AS builder
+FROM node:19 AS app
 
 COPY /dist /app
 WORKDIR /app
