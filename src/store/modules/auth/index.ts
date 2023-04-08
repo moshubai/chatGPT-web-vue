@@ -1,11 +1,16 @@
 import { defineStore } from 'pinia'
 import { store } from '../../store'
 import { getToken, removeToken, setToken } from './helper'
-// import { fetchSession } from '@/api'
+import { fetchSession } from '@/api'
+
+interface SessionResponse {
+  auth: boolean
+  model: 'ChatGPTAPI' | 'ChatGPTUnofficialProxyAPI'
+}
 
 export interface AuthState {
   token: string | undefined
-  session: { auth: boolean } | null
+  session: SessionResponse | null
 }
 
 export const useAuthStore = defineStore('auth-store', {
@@ -14,16 +19,22 @@ export const useAuthStore = defineStore('auth-store', {
     session: null,
   }),
 
+  getters: {
+    isChatGPTAPI(state): boolean {
+      return state.session?.model === 'ChatGPTAPI'
+    },
+  },
+
   actions: {
     async getSession() {
-      // try {
-      //   const { data } = await fetchSession<{ auth: boolean }>()
-      //   this.session = { ...data }
-      //   return Promise.resolve(data)
-      // }
-      // catch (error) {
-      //   return Promise.reject(error)
-      // }
+      try {
+        const { data } = await fetchSession<SessionResponse>()
+        this.session = { ...data }
+        return Promise.resolve(data)
+      }
+      catch (error) {
+        return Promise.reject(error)
+      }
     },
 
     setToken(token: string) {

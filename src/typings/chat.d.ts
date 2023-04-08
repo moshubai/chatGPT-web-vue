@@ -18,8 +18,8 @@ declare namespace Chat {
 
 	interface ChatState {
 		active: number | null
+		usingContext: boolean;
 		history: History[]
-		network: boolean | null
 		chat: { uuid: number; data: Chat[] }[]
 	}
 

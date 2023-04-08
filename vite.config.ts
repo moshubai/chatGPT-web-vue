@@ -1,7 +1,25 @@
 import path from 'path'
-import vue from '@vitejs/plugin-vue'
+import type { PluginOption } from 'vite'
 import { defineConfig, loadEnv } from 'vite'
+import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa'
+
+function setupPlugins(env: ImportMetaEnv): PluginOption[] {
+  return [
+    vue(),
+    env.VITE_GLOB_APP_PWA === 'true' && VitePWA({
+      injectRegister: 'auto',
+      manifest: {
+        name: 'chatGPT',
+        short_name: 'chatGPT',
+        icons: [
+          { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },
+          { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png' },
+        ],
+      },
+    }),
+  ]
+}
 
 export default defineConfig((env) => {
   const viteEnv = loadEnv(env.mode, process.cwd()) as unknown as ImportMetaEnv
@@ -12,42 +30,20 @@ export default defineConfig((env) => {
         '@': path.resolve(process.cwd(), 'src'),
       },
     },
-    plugins: [
-      vue(),
-      VitePWA({
-        injectRegister: 'auto',
-        manifest: {
-          name: 'chatGPT',
-          short_name: 'chatGPT',
-          icons: [
-            { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },
-            { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png' },
-          ],
-        },
-      }),
-    ],
+    plugins: setupPlugins(viteEnv),
     server: {
       host: '0.0.0.0',
-      port: 5335,
+      port: 3390,
       open: false,
       proxy: {
         '/api': {
           target: viteEnv.VITE_APP_API_BASE_URL,
-          // target: 'http://18.189.178.168:3002',
-          // http://18.189.178.168:3002/#/chat/1680879633822
           changeOrigin: true, // 允许跨域
           rewrite: path => path.replace('/api/', '/'),
         },
       },
     },
     build: {
-      rollupOptions: {
-        // input: 'src/main.js', // 指定入口文件路径
-        output: {
-          format: 'iife', // 指定输出格式为立即执行函数（Immediately Invoked Function Expression）
-          inlineDynamicImports: true, // 将动态import转换为具体实现的代码，避免异步加载
-        },
-      },
       reportCompressedSize: false,
       sourcemap: false,
       commonjsOptions: {

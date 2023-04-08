@@ -1,11 +1,12 @@
 <script setup lang='ts'>
-import { computed, watch } from 'vue'
 import type { CSSProperties } from 'vue'
-import { NButton, NIcon, NLayoutSider } from 'naive-ui'
+import { computed, watch } from 'vue'
+import { NButton, NLayoutSider } from 'naive-ui'
 import List from './List.vue'
 import Footer from './Footer.vue'
 import { useAppStore, useChatStore } from '@/store'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
+// import { PromptStore } from '@/components/common'
 
 const appStore = useAppStore()
 const chatStore = useChatStore()
@@ -17,6 +18,8 @@ const collapsed = computed(() => appStore.siderCollapsed)
 
 function handleAdd() {
   chatStore.addHistory({ title: 'New Chat', uuid: Date.now(), isEdit: false })
+  if (isMobile.value)
+    appStore.setSiderCollapsed(true)
 }
 
 function handleUpdateCollapsed() {
