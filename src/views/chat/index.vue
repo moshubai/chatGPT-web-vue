@@ -106,7 +106,7 @@ async function onConversation() {
       signal: controller.signal,
       network: true,
       onDownloadProgress: ({ event }) => {
-        debugger
+        // debugger
         const xhr = event.target
         const { responseText } = xhr
         // Always process the final line
@@ -116,7 +116,7 @@ async function onConversation() {
         //   chunk = responseText.substring(lastIndex)
         try {
           // const data = JSON.parse(chunk)
-          debugger
+          // debugger
           updateChat(
             +uuid,
             dataSources.value.length - 1,

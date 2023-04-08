@@ -33,6 +33,8 @@ export default defineConfig((env) => {
       proxy: {
         '/api': {
           target: viteEnv.VITE_APP_API_BASE_URL,
+          // target: 'http://18.189.178.168:3002',
+          // http://18.189.178.168:3002/#/chat/1680879633822
           changeOrigin: true, // 允许跨域
           rewrite: path => path.replace('/api/', '/'),
         },

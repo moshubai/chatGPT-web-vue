@@ -1,8 +1,7 @@
 # build front-end
-# FROM node:lts-alpine AS builder
-FROM node:19 AS app
+FROM node:lts-alpine AS builder
 
-COPY /dist /app
+COPY ./ /app
 WORKDIR /app
 
 # RUN apk add --no-cache git \

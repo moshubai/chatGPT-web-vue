@@ -22,16 +22,18 @@ export function fetchChatConfig<T = any>() {
 export function fetchChatAPIProcess<T = any>(
   params: {
     prompt: string
-    network?: boolean,
+    network?: boolean
     options?: { conversationId?: string; parentMessageId?: string }
     signal?: GenericAbortSignal
     onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void },
-    
+
 ) {
   console.log('process', process.env.NODE_ENV === 'development')
   return post<T>({
-    url: 'https://cbjtestapi.binjie.site:7777/api/generateStream',
+    url: '/chat',
     data: { prompt: params.prompt, userId: window.location.hash, network: !!params.network },
+    // data: { prompt: params.prompt, userId: params?.options?.conversationId, network: !!params.network },
+
     signal: params.signal,
     onDownloadProgress: params.onDownloadProgress,
   })

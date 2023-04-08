@@ -1,6 +1,6 @@
 import express from 'express'
 import type { ChatContext, ChatMessage } from './chatgpt'
-import { chatConfig, chatReplyProcess } from './chatgpt'
+import { chatConfig, chatReply, chatReplyProcess } from './chatgpt'
 import { auth } from './middleware/auth'
 
 const app = express()
@@ -14,6 +14,17 @@ app.all('*', (_, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Content-Type')
   res.header('Access-Control-Allow-Methods', '*')
   next()
+})
+
+router.post('/chat', async (req, res) => {
+  try {
+    const { prompt, options = {} } = req.body as { prompt: string; options?: ChatContext }
+    const response = await chatReply(prompt, options)
+    res.send(response)
+  }
+  catch (error) {
+    res.send(error)
+  }
 })
 
 router.post('/chat-process', auth, async (req, res) => {
@@ -74,5 +85,6 @@ router.post('/verify', async (req, res) => {
 
 app.use('', router)
 app.use('/api', router)
+app.set('trust proxy', 1)
 
 app.listen(3002, () => globalThis.console.log('Server is running on port 3002'))
