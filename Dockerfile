@@ -23,6 +23,6 @@ RUN apk add --no-cache git \
     && rm -rf /root/.npm /root/.pnpm-store /usr/local/share/.cache /tmp/*
 
 
-EXPOSE 3002
+EXPOSE 80
 
 CMD ["pnpm", "run", "start"]
