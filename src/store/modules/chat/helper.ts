@@ -13,11 +13,13 @@ export function defaultState(): Chat.ChatState {
 }
 
 export function getLocalState(): Chat.ChatState {
-  const localState = ss.get(LOCAL_NAME)
-  if (localState && localState.network === undefined)
-    localState.network = true
+  // const localState = ss.get(LOCAL_NAME)
+  // if (localState && localState.network === undefined)
+  //   localState.network = true
 
-  return localState ?? defaultState()
+  // return localState ?? defaultState()
+  const localState = ss.get(LOCAL_NAME)
+  return { ...defaultState(), ...localState }
 }
 
 export function setLocalState(state: Chat.ChatState) {
