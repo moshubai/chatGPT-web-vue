@@ -35,14 +35,16 @@ export function fetchChatAPIProcess<T = any>(
     options: params.options,
   }
 
-  if (authStore.isChatGPTAPI) {
-    data = {
-      ...data,
-      systemMessage: settingStore.systemMessage,
-      temperature: settingStore.temperature,
-      top_p: settingStore.top_p,
-    }
+  // console.log(settingStore)
+  // 授权用
+  // if (authStore.isChatGPTAPI) {
+  data = {
+    ...data,
+    systemMessage: settingStore.systemMessage,
+    temperature: settingStore.temperature,
+    top_p: settingStore.top_p,
   }
+  // }
 
   return post<T>({
     url: '/chat-process',

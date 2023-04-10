@@ -1,13 +1,20 @@
 <script setup lang='ts'>
-import { computed, ref } from 'vue'
-import { NDropdown } from 'naive-ui'
+import { ref } from 'vue'
+import { useMessage } from 'naive-ui'
 import AvatarComponent from './Avatar.vue'
 import TextComponent from './Text.vue'
 import { SvgIcon } from '@/components/common'
 import { copyText } from '@/utils/format'
-import { useIconRender } from '@/hooks/useIconRender'
-import { t } from '@/locales'
-import { useBasicLayout } from '@/hooks/useBasicLayout'
+
+const props = defineProps<Props>()
+
+const emit = defineEmits<Emit>()
+
+const message = useMessage()
+
+// import { useIconRender } from '@/hooks/useIconRender'
+// import { t } from '@/locales'
+// import { useBasicLayout } from '@/hooks/useBasicLayout'
 
 interface Props {
   dateTime?: string
@@ -22,13 +29,9 @@ interface Emit {
   (ev: 'delete'): void
 }
 
-const props = defineProps<Props>()
+// const { isMobile } = useBasicLayout()
 
-const emit = defineEmits<Emit>()
-
-const { isMobile } = useBasicLayout()
-
-const { iconRender } = useIconRender()
+// const { iconRender } = useIconRender()
 
 const textRef = ref<HTMLElement>()
 
@@ -36,35 +39,36 @@ const asRawText = ref(props.inversion)
 
 const messageRef = ref<HTMLElement>()
 
-const options = computed(() => {
-  const common = [
-    {
-      label: t('chat.copy'),
-      key: 'copyText',
-      icon: iconRender({ icon: 'ri:file-copy-2-line' }),
-    },
-    {
-      label: t('common.delete'),
-      key: 'delete',
-      icon: iconRender({ icon: 'ri:delete-bin-line' }),
-    },
-  ]
+// const options = computed(() => {
+//   const common = [
+//     {
+//       label: t('chat.copy'),
+//       key: 'copyText',
+//       icon: iconRender({ icon: 'ri:file-copy-2-line' }),
+//     },
+//     {
+//       label: t('common.delete'),
+//       key: 'delete',
+//       icon: iconRender({ icon: 'ri:delete-bin-line' }),
+//     },
+//   ]
 
-  if (!props.inversion) {
-    common.unshift({
-      label: asRawText.value ? t('chat.preview') : t('chat.showRawText'),
-      key: 'toggleRenderType',
-      icon: iconRender({ icon: asRawText.value ? 'ic:outline-code-off' : 'ic:outline-code' }),
-    })
-  }
+//   if (!props.inversion) {
+//     common.unshift({
+//       label: asRawText.value ? t('chat.preview') : t('chat.showRawText'),
+//       key: 'toggleRenderType',
+//       icon: iconRender({ icon: asRawText.value ? 'ic:outline-code-off' : 'ic:outline-code' }),
+//     })
+//   }
 
-  return common
-})
+//   return common
+// })
 
 function handleSelect(key: 'copyText' | 'delete' | 'toggleRenderType') {
   switch (key) {
     case 'copyText':
       copyText({ text: props.text ?? '' })
+      message.info('复制成功')
       return
     case 'toggleRenderType':
       asRawText.value = !asRawText.value
@@ -74,10 +78,10 @@ function handleSelect(key: 'copyText' | 'delete' | 'toggleRenderType') {
   }
 }
 
-function handleRegenerate() {
-  messageRef.value?.scrollIntoView()
-  emit('regenerate')
-}
+// function handleRegenerate() {
+//   messageRef.value?.scrollIntoView()
+//   emit('regenerate')
+// }
 </script>
 
 <template>
@@ -106,23 +110,26 @@ function handleRegenerate() {
           :as-raw-text="asRawText"
         />
         <div class="flex flex-col">
-          <button
+          <!-- <button
             v-if="!inversion"
             class="mb-2 transition text-neutral-300 hover:text-neutral-800 dark:hover:text-neutral-300"
             @click="handleRegenerate"
           >
             <SvgIcon icon="ri:restart-line" />
+          </button> -->
+          <button class="transition text-neutral-300 hover:text-neutral-800 dark:hover:text-neutral-200" @click="handleSelect('copyText')">
+            <SvgIcon icon="ri:file-copy-2-line" />
           </button>
-          <NDropdown
+          <!-- <NDropdown
             :trigger="isMobile ? 'click' : 'hover'"
             placement="right"
             :options="options"
             @select="handleSelect"
           >
             <button class="transition text-neutral-300 hover:text-neutral-800 dark:hover:text-neutral-200">
-              <SvgIcon icon="ri:more-2-fill" />
+              <SvgIcon icon="ri:file-copy-2-line" />
             </button>
-          </NDropdown>
+          </NDropdown> -->
         </div>
       </div>
     </div>
