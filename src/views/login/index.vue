@@ -3,13 +3,15 @@ import type { FormInst } from 'naive-ui'
 import { NButton, NForm, NFormItem, NInput, useMessage } from 'naive-ui'
 import { nextTick, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/store'
 const message = useMessage()
 const formRef = ref<FormInst | null>(null)
 const router = useRouter()
+const authStore = useAuthStore()
 
 const formValue = ref({
-  useName: '',
-  password: '',
+  useName: 'admin',
+  password: 'admin',
 
 })
 const rules = {
@@ -29,10 +31,11 @@ function handleValidateClick(e: MouseEvent) {
   e.preventDefault()
   formRef.value?.validate((errors) => {
     if (!errors) {
+      // const {useName,password} = formValue.value
       message.success('登录成功')
-
       router.push('/chat')
       nextTick(() => {
+        authStore.setToken('Bearer 252d2b61-cd39-40a5-b773-9a0d427813e1')
         // console.log(formValue.value)
       })
     }
