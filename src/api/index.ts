@@ -41,9 +41,10 @@ export function fetchChatAPIProcess<T = any>(
   // if (authStore.isChatGPTAPI) {
   data = {
     ...data,
-    systemMessage: settingStore.systemMessage,
+    // systemMessage: settingStore.systemMessage,
     temperature: settingStore.temperature,
     top_p: settingStore.top_p,
+    max_tokens: settingStore.max_tokens,
   }
   // }
 

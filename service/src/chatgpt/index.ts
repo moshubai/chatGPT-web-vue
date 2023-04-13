@@ -1,13 +1,13 @@
 import * as dotenv from 'dotenv'
 import 'isomorphic-fetch'
-import type { ChatGPTAPIOptions, ChatMessage, SendMessageOptions } from 'chatgpt'
-import { ChatGPTAPI, ChatGPTUnofficialProxyAPI } from 'chatgpt'
+import type { ChatGPTAPIOptions, ChatGPTUnofficialProxyAPI, ChatMessage, SendMessageOptions } from 'chatgpt'
+import { ChatGPTAPI } from 'chatgpt'
 import { SocksProxyAgent } from 'socks-proxy-agent'
 import httpsProxyAgent from 'https-proxy-agent'
 import fetch from 'node-fetch'
 import { sendResponse } from '../utils'
 import { isNotEmptyString } from '../utils/is'
-import type { ApiModel, ChatContext, ChatGPTUnofficialProxyAPIOptions, ModelConfig } from '../types'
+import type { ApiModel, ChatContext, ModelConfig } from '../types'
 import type { RequestOptions, SetProxyOptions, UsageResponse } from './types'
 
 const { HttpsProxyAgent } = httpsProxyAgent
@@ -17,6 +17,7 @@ dotenv.config()
 const ErrorCodeMessage: Record<string, string> = {
   401: '[OpenAI] 提供错误的API密钥 | Incorrect API key provided',
   403: '[OpenAI] 服务器拒绝访问，请稍后再试 | Server refused to access, please try again later',
+  429: '[OpenAI] 服务器繁忙，请稍后再试 | Internal Server Error',
   502: '[OpenAI] 错误的网关 |  Bad Gateway',
   503: '[OpenAI] 服务器繁忙，请稍后再试 | Server is busy, please try again later',
   504: '[OpenAI] 网关超时 | Gateway Time-out',
@@ -60,6 +61,10 @@ let api: ChatGPTAPI | ChatGPTUnofficialProxyAPI
         options.maxResponseTokens = 2048
       }
     }
+    else {
+      options.maxModelTokens = 8192
+      options.maxResponseTokens = 2048
+    }
 
     if (isNotEmptyString(OPENAI_API_BASE_URL))
       options.apiBaseUrl = `${OPENAI_API_BASE_URL}/v1`
@@ -69,25 +74,25 @@ let api: ChatGPTAPI | ChatGPTUnofficialProxyAPI
     api = new ChatGPTAPI({ ...options })
     apiModel = 'ChatGPTAPI'
   }
-  else {
-    const OPENAI_API_MODEL = process.env.OPENAI_API_MODEL
-    const options: ChatGPTUnofficialProxyAPIOptions = {
-      accessToken: process.env.OPENAI_ACCESS_TOKEN,
-      debug: !disableDebug,
-    }
+  // else {
+  //   const OPENAI_API_MODEL = process.env.OPENAI_API_MODEL
+  //   const options: ChatGPTUnofficialProxyAPIOptions = {
+  //     accessToken: process.env.OPENAI_ACCESS_TOKEN,
+  //     debug: !disableDebug,
+  //   }
 
-    if (isNotEmptyString(OPENAI_API_MODEL))
-      options.model = OPENAI_API_MODEL
+  //   if (isNotEmptyString(OPENAI_API_MODEL))
+  //     options.model = OPENAI_API_MODEL
 
-    options.apiReverseProxyUrl = isNotEmptyString(process.env.API_REVERSE_PROXY)
-      ? process.env.API_REVERSE_PROXY
-      : 'https://bypass.churchless.tech/api/conversation'
+  //   options.apiReverseProxyUrl = isNotEmptyString(process.env.API_REVERSE_PROXY)
+  //     ? process.env.API_REVERSE_PROXY
+  //     : 'https://bypass.churchless.tech/api/conversation'
 
-    setupProxy(options)
+  //   setupProxy(options)
 
-    api = new ChatGPTUnofficialProxyAPI({ ...options })
-    apiModel = 'ChatGPTUnofficialProxyAPI'
-  }
+  //   api = new ChatGPTUnofficialProxyAPI({ ...options })
+  //   apiModel = 'ChatGPTUnofficialProxyAPI'
+  // }
 })()
 
 async function chatReplyProcess(options: RequestOptions) {
@@ -98,7 +103,14 @@ async function chatReplyProcess(options: RequestOptions) {
     if (apiModel === 'ChatGPTAPI') {
       if (isNotEmptyString(systemMessage))
         options.systemMessage = systemMessage
-      options.completionParams = { model, temperature, top_p, max_tokens }
+      options.completionParams = {
+        model,
+        temperature,
+        top_p,
+        max_tokens,
+        frequency_penalty: 0,
+        presence_penalty: 0,
+      }
     }
 
     if (lastContext != null) {
