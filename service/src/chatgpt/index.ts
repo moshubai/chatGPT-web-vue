@@ -15,6 +15,7 @@ const { HttpsProxyAgent } = httpsProxyAgent
 dotenv.config()
 
 const ErrorCodeMessage: Record<string, string> = {
+  400: '[OpenAI] 网关超时了，再我问一下吧(*╹▽╹*)',
   401: '[OpenAI] 提供错误的API密钥 | Incorrect API key provided',
   403: '[OpenAI] 服务器拒绝访问，请稍后再试 | Server refused to access, please try again later',
   429: '[OpenAI] 服务器繁忙，请稍后再试 | Internal Server Error',
