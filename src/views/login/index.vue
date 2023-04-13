@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { FormInst } from 'naive-ui'
-import { NButton, NForm, NFormItem, NInput, useMessage } from 'naive-ui'
+import { NButton, NForm, NFormItem, NIcon, NInput, useMessage } from 'naive-ui'
 import { nextTick, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { IosPerson, MdLock } from '@vicons/ionicons4'
 import { useAuthStore } from '@/store'
 const message = useMessage()
 const formRef = ref<FormInst | null>(null)
@@ -48,19 +49,27 @@ function handleValidateClick(e: MouseEvent) {
 
 <template>
   <div class="login_warp">
-    <h2>
+    <h2 class="login_cont">
       欢迎登录体验
     </h2>
     <NForm ref="formRef" :model="formValue" :rules="rules" label-placement="left" label-width="auto" class="login_form">
-      <NFormItem label="用户名" path="useName">
-        <NInput v-model:value="formValue.useName" placeholder="请输入用户名" />
+      <NFormItem path="useName">
+        <NInput v-model:value="formValue.useName" placeholder="请输入用户名">
+          <template #prefix>
+            <NIcon :component="IosPerson" />
+          </template>
+        </NInput>
       </NFormItem>
 
-      <NFormItem label="密码" path="password">
-        <NInput v-model:value="formValue.password" placeholder="请输入密码" type="password" />
+      <NFormItem path="password">
+        <NInput v-model:value="formValue.password" placeholder="请输入密码" type="password">
+          <template #prefix>
+            <NIcon :component="MdLock" />
+          </template>
+        </NInput>
       </NFormItem>
       <div class="login_btn_warp">
-        <NButton type="primary" class="login_btn" attr-type="button" @click="handleValidateClick">
+        <NButton type="info" class="login_btn" attr-type="button" @click="handleValidateClick">
           登录
         </NButton>
       </div>
@@ -76,6 +85,11 @@ function handleValidateClick(e: MouseEvent) {
   justify-content: center;
   flex-direction: column;
   height: 100vh;
+  .login_cont{
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
 
   .login_form {
     width: 400px;

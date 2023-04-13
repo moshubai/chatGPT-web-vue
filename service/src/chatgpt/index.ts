@@ -96,7 +96,7 @@ let api: ChatGPTAPI | ChatGPTUnofficialProxyAPI
 })()
 
 async function chatReplyProcess(options: RequestOptions) {
-  const { message, lastContext, process, systemMessage, temperature, top_p, max_tokens } = options
+  const { message, lastContext, process, systemMessage, temperature, top_p, max_tokens = 2048 } = options
   try {
     let options: SendMessageOptions = { timeoutMs }
 

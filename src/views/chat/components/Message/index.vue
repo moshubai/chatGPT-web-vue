@@ -78,10 +78,10 @@ function handleSelect(key: 'copyText' | 'delete' | 'toggleRenderType') {
   }
 }
 
-// function handleRegenerate() {
-//   messageRef.value?.scrollIntoView()
-//   emit('regenerate')
-// }
+function handleRegenerate() {
+  messageRef.value?.scrollIntoView()
+  emit('regenerate')
+}
 </script>
 
 <template>
@@ -110,13 +110,13 @@ function handleSelect(key: 'copyText' | 'delete' | 'toggleRenderType') {
           :as-raw-text="asRawText"
         />
         <div class="flex flex-col">
-          <!-- <button
+          <button
             v-if="!inversion"
             class="mb-2 transition text-neutral-300 hover:text-neutral-800 dark:hover:text-neutral-300"
             @click="handleRegenerate"
           >
             <SvgIcon icon="ri:restart-line" />
-          </button> -->
+          </button>
           <button class="transition text-neutral-300 hover:text-neutral-800 dark:hover:text-neutral-200" @click="handleSelect('copyText')">
             <SvgIcon icon="ri:file-copy-2-line" />
           </button>
