@@ -4,11 +4,12 @@ import { NButton, NForm, NFormItem, NIcon, NInput, useMessage } from 'naive-ui'
 import { nextTick, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { IosPerson, MdLock } from '@vicons/ionicons4'
-import { useAuthStore } from '@/store'
+import { useAuthStore, useChatStore } from '@/store'
 const message = useMessage()
 const formRef = ref<FormInst | null>(null)
 const router = useRouter()
 const authStore = useAuthStore()
+const chatStore = useChatStore()
 
 const formValue = ref({
   useName: 'admin',
@@ -34,7 +35,8 @@ function handleValidateClick(e: MouseEvent) {
     if (!errors) {
       // const {useName,password} = formValue.value
       message.success('登录成功')
-      router.push('/chat')
+      // router.push('/chat')
+      router.push({ name: 'Chat', params: { uuid: chatStore.active } })
       nextTick(() => {
         authStore.setToken('Bearer 252d2b61-cd39-40a5-b773-9a0d427813e1')
         // console.log(formValue.value)
