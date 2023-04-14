@@ -1,4 +1,4 @@
-import{n as g,E as l,s as d,v as h,d as v,t as b,aX as y,e as a,B as C,aM as _,aR as $,h as m,m as z}from"./index-a119e4fd.js";const R=g("icon",`
+import{n as g,E as l,s as d,v as h,d as v,t as b,aX as y,e as a,B as C,aM as _,aR as $,h as m,m as z}from"./index-43fc8f2d.js";const R=g("icon",`
  height: 1em;
  width: 1em;
  line-height: 1em;

@@ -36,7 +36,7 @@ function handleValidateClick(e: MouseEvent) {
       // const {useName,password} = formValue.value
       message.success('登录成功')
       // router.push('/chat')
-      router.push({ name: 'Chat', params: { uuid: chatStore.active } })
+      router.push({ path: `/chat/${chatStore.active}`, params: { uuid: chatStore.active } })
       nextTick(() => {
         authStore.setToken('Bearer 252d2b61-cd39-40a5-b773-9a0d427813e1')
         // console.log(formValue.value)
