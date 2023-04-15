@@ -3,9 +3,8 @@ import type { Ref } from 'vue'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { NAutoComplete, NButton, NIcon, NInput, useDialog, useMessage } from 'naive-ui'
+import { NAutoComplete, NButton, NInput, useDialog, useMessage } from 'naive-ui'
 import html2canvas from 'html2canvas'
-import { IosMore, IosSend } from '@vicons/ionicons4'
 import { Message } from './components'
 import { useScroll } from './hooks/useScroll'
 import { useChat } from './hooks/useChat'
@@ -550,8 +549,9 @@ onUnmounted(() => {
           <NButton type="primary" :disabled="buttonDisabled" @click="handleSubmit">
             <template #icon>
               <span class="dark:text-black">
-                <NIcon v-if="loading" size="25" :component="IosMore" />
-                <NIcon v-else size="25" :component="IosSend" />
+                <SvgIcon icon="ri:send-plane-fill" />
+                <!-- <NIcon v-if="loading" size="25" :component="IosMore" />
+                <NIcon v-else size="25" :component="IosSend" /> -->
               </span>
             </template>
           </NButton>

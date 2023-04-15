@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { FormInst } from 'naive-ui'
-import { NButton, NForm, NFormItem, NIcon, NInput, useMessage } from 'naive-ui'
+import { NButton, NForm, NFormItem, NInput, useMessage } from 'naive-ui'
 import { nextTick, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { IosPerson, MdLock } from '@vicons/ionicons4'
 import { useAuthStore, useChatStore } from '@/store'
+import { SvgIcon } from '@/components/common'
 const message = useMessage()
 const formRef = ref<FormInst | null>(null)
 const router = useRouter()
@@ -58,7 +58,7 @@ function handleValidateClick(e: MouseEvent) {
       <NFormItem path="useName">
         <NInput v-model:value="formValue.useName" placeholder="请输入用户名">
           <template #prefix>
-            <NIcon :component="IosPerson" />
+            <SvgIcon icon="ri:user-3-fill" />
           </template>
         </NInput>
       </NFormItem>
@@ -66,7 +66,8 @@ function handleValidateClick(e: MouseEvent) {
       <NFormItem path="password">
         <NInput v-model:value="formValue.password" placeholder="请输入密码" type="password">
           <template #prefix>
-            <NIcon :component="MdLock" />
+            <SvgIcon icon="ri:lock-password-fill" />
+            <!-- <NIcon :component="MdLock" /> -->
           </template>
         </NInput>
       </NFormItem>
