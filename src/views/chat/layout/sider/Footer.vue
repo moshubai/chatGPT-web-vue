@@ -6,7 +6,8 @@ import { HoverButton, SvgIcon, UserAvatar } from '@/components/common'
 import { useAppStore } from '@/store'
 const appStore = useAppStore()
 const theme = computed(() => appStore.theme)
-const { usingContext, toggleUsingContext } = useUsingContext()
+// const { usingContext, toggleUsingContext } = useUsingContext()
+const { usingContext } = useUsingContext()
 const { handleExportFn } = useExportImage()
 function handleExport() {
   handleExportFn()
@@ -32,11 +33,11 @@ function handleExport() {
           </span>
         </HoverButton>
       </template>
-      <HoverButton @click="toggleUsingContext">
+      <!-- <HoverButton @click="toggleUsingContext">
         <span class="text-xl" :class="{ 'text-[#4b9e5f]': usingContext, 'text-[#a8071a]': !usingContext }">
           <SvgIcon icon="ri:chat-history-line" />
         </span>
-      </HoverButton>
+      </HoverButton> -->
       <HoverButton @click="handleExport">
         <span class="text-xl dark:text-white">
           <SvgIcon icon="ri:download-2-line" />
