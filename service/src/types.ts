@@ -33,3 +33,14 @@ export interface ModelConfig {
 }
 
 export type ApiModel = 'ChatGPTAPI' | 'ChatGPTUnofficialProxyAPI' | undefined
+
+// 成功状态
+export const successRes = {
+  status: 'Success',
+  message: '成功',
+}
+// 失败状态
+export const failRes = {
+  status: 'Fail',
+  message: '失败',
+}

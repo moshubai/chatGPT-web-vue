@@ -1,10 +1,12 @@
 import express from 'express'
 import type { RequestProps } from './types'
+
 import type { ChatMessage } from './chatgpt'
 import { chatConfig, chatReplyProcess, currentModel } from './chatgpt'
 import { auth } from './middleware/auth'
 import { limiter } from './middleware/limiter'
 import { isNotEmptyString } from './utils/is'
+import { login } from './controllers/login'
 
 const app = express()
 const router = express.Router()
@@ -82,7 +84,10 @@ router.post('/verify', async (req, res) => {
     res.send({ status: 'Fail', message: error.message, data: null })
   }
 })
-
+router.post('/lgoin', async (req, res) => {
+  const response = await login(req)
+  res.send(response)
+})
 app.use('', router)
 app.use('/api', router)
 app.set('trust proxy', 1)

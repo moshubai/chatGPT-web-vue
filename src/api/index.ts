@@ -68,3 +68,10 @@ export function fetchVerify<T>(token: string) {
     data: { token },
   })
 }
+
+export function fetchLoginIn<T>(userInfo: { useName: string; password: string }) {
+  return post<T>({
+    url: '/lgoin',
+    data: { ...userInfo },
+  })
+}

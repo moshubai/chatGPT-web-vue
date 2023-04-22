@@ -5,6 +5,7 @@ import { nextTick, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore, useChatStore } from '@/store'
 import { SvgIcon } from '@/components/common'
+import { fetchLoginIn } from '@/api/index'
 const message = useMessage()
 const formRef = ref<FormInst | null>(null)
 const router = useRouter()
@@ -31,16 +32,26 @@ const rules = {
 
 function handleValidateClick(e: MouseEvent) {
   e.preventDefault()
-  formRef.value?.validate((errors) => {
+  formRef.value?.validate(async (errors) => {
     if (!errors) {
-      // const {useName,password} = formValue.value
-      message.success('登录成功')
-      // router.push('/chat')
-      router.push({ path: `/chat/${chatStore.active}`, params: { uuid: chatStore.active } })
-      nextTick(() => {
-        authStore.setToken('Bearer 252d2b61-cd39-40a5-b773-9a0d427813e1')
-        // console.log(formValue.value)
-      })
+      const { useName, password } = formValue.value
+      try {
+        const resv = await fetchLoginIn({ useName, password })
+        // console.log(resv)
+        if (resv.status == 'Success') {
+          message.success('登录成功')
+          // router.push('/chat')
+          router.push({ path: '/chat', query: { uuid: chatStore.active } })
+          nextTick(() => {
+            authStore.setToken('Bearer 252d2b61-cd39-40a5-b773-9a0d427813e1')
+            // console.log(formValue.value)
+          })
+        }
+      }
+      catch (error) {
+        console.log(error)
+        message.error('用户名/密码错误')
+      }
     }
     else {
       // console.log(errors)
