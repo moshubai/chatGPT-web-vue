@@ -33,8 +33,11 @@ function handleEdit({ uuid }: Chat.History, isEdit: boolean, event?: MouseEvent)
 function handleDelete(index: number, event?: MouseEvent | TouchEvent) {
   event?.stopPropagation()
   chatStore.deleteHistory(index)
-  if (isMobile.value)
-    appStore.setSiderCollapsed(true)
+  if (chatStore.history.length === 0)
+    chatStore.addHistory({ title: 'New Chat', uuid: Date.now(), isEdit: false })
+
+  // if (isMobile.value)
+  //   appStore.setSiderCollapsed(true)
 }
 
 const handleDeleteDebounce = debounce(handleDelete, 600)

@@ -116,6 +116,12 @@ export const useChatStore = defineStore('chat-store', {
           this.history[index].title = chat.text
         this.recordState()
       }
+      else {
+        this.history.push({ uuid, title: chat.text, isEdit: false })
+        this.chat.push({ uuid, data: [chat] })
+        this.active = uuid
+        this.recordState()
+      }
     },
 
     updateChatByUuid(uuid: number, index: number, chat: Chat.Chat) {

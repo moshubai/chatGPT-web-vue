@@ -13,8 +13,8 @@ const authStore = useAuthStore()
 const chatStore = useChatStore()
 
 const formValue = ref({
-  useName: 'admin',
-  password: 'admin',
+  useName: '',
+  password: '',
 
 })
 const rules = {
@@ -37,14 +37,11 @@ function handleValidateClick(e: MouseEvent) {
       const { useName, password } = formValue.value
       try {
         const resv = await fetchLoginIn({ useName, password })
-        // console.log(resv)
         if (resv.status == 'Success') {
           message.success('登录成功')
-          // router.push('/chat')
           router.push({ path: '/chat', query: { uuid: chatStore.active } })
           nextTick(() => {
             authStore.setToken('Bearer 252d2b61-cd39-40a5-b773-9a0d427813e1')
-            // console.log(formValue.value)
           })
         }
       }

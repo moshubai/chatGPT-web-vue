@@ -13,7 +13,7 @@ const login = (req) => {
         // 判断返回result是否有数据
         console.log(result)
         // db.end()
-        const res = (result.length > 0 && result[0].status === 0) ? successRes : failRes
+        const res = (result.length > 0 && result[0].status === 1) ? successRes : failRes
         resolve({ ...res })
       }
     })
