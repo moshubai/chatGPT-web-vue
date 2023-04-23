@@ -39,7 +39,8 @@ function handleValidateClick(e: MouseEvent) {
         const resv = await fetchLoginIn({ useName, password })
         if (resv.status == 'Success') {
           message.success('登录成功')
-          router.push({ path: '/chat', query: { uuid: chatStore.active } })
+          // router.push({ path: '/chat', params: { uuid: chatStore.active } })
+          router.push({ path: `/chat/${chatStore.active}` })
           nextTick(() => {
             authStore.setToken('Bearer 252d2b61-cd39-40a5-b773-9a0d427813e1')
           })
