@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import type { Ref } from 'vue'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { NAutoComplete, NButton, NInput, useDialog, useMessage } from 'naive-ui'
 import html2canvas from 'html2canvas'
@@ -16,16 +16,19 @@ import { useBasicLayout } from '@/hooks/useBasicLayout'
 import { useChatStore, usePromptStore } from '@/store'
 import { fetchChatAPIProcess } from '@/api'
 import { t } from '@/locales'
-
+import { useAuthStoreWithout } from '@/store/modules/auth'
 let controller = new AbortController()
 
 const openLongReply = import.meta.env.VITE_GLOB_OPEN_LONG_REPLY === 'true'
 
 const route = useRoute()
+const router = useRouter()
 const dialog = useDialog()
 const ms = useMessage()
 
 const chatStore = useChatStore()
+
+const authStore = useAuthStoreWithout()
 
 useCopyCode()
 
@@ -64,6 +67,12 @@ async function onConversation() {
 
   if (loading.value)
     return
+
+  console.log(authStore)
+  if (!authStore.token) {
+    router.push({ path: '/login' })
+    return
+  }
 
   if (!message || message.trim() === '')
     return

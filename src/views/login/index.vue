@@ -3,14 +3,14 @@ import type { FormInst } from 'naive-ui'
 import { NButton, NForm, NFormItem, NInput, useMessage } from 'naive-ui'
 import { nextTick, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useAuthStore, useChatStore } from '@/store'
+import { useAuthStore } from '@/store'
 import { SvgIcon } from '@/components/common'
 import { fetchLoginIn } from '@/api/index'
 const message = useMessage()
 const formRef = ref<FormInst | null>(null)
 const router = useRouter()
 const authStore = useAuthStore()
-const chatStore = useChatStore()
+// const chatStore = useChatStore()
 
 const formValue = ref({
   useName: '',
@@ -39,8 +39,8 @@ function handleValidateClick(e: MouseEvent) {
         const resv = await fetchLoginIn({ useName, password })
         if (resv.status == 'Success') {
           message.success('登录成功')
-          // router.push({ path: '/chat', params: { uuid: chatStore.active } })
-          router.push({ path: `/chat/${chatStore.active}` })
+          router.push({ path: '/chat' })
+          // router.push({ path: `/chat/${chatStore.active}` })
           nextTick(() => {
             authStore.setToken('Bearer 252d2b61-cd39-40a5-b773-9a0d427813e1')
           })
