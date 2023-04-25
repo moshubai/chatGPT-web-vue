@@ -1,8 +1,13 @@
 const mysql = require('mysql')
 const config = {
-  username: 'db1',
+  // username: 'db1',
+  // password: 'Abc_12345!',
+  // host: 'database1.mysql.polardb.rds.aliyuncs.com',
+  // port: 3306,
+  // database: 'cg',
+  username: 'admin',
   password: 'Abc_12345!',
-  host: 'database1.mysql.polardb.rds.aliyuncs.com',
+  host: 'database-2.c1rj3g6devhk.us-east-2.rds.amazonaws.com',
   port: 3306,
   database: 'cg',
 }

@@ -70,7 +70,16 @@ async function onConversation() {
 
   console.log(authStore)
   if (!authStore.token) {
-    router.push({ path: '/login' })
+    dialog.warning({
+      title: '提示',
+      content: '您还没有登录哦，快去登录吧~',
+      positiveText: '去登录',
+      negativeText: '取消',
+      onPositiveClick: () => {
+        router.push({ path: '/login' })
+      },
+    })
+
     return
   }
 
@@ -426,6 +435,9 @@ function handleStop() {
 // 理想状态下其实应该是key作为索引项,但官方的renderOption会出现问题，所以就需要value反renderLabel实现
 const searchOptions = computed(() => {
   if (prompt.value.startsWith('/')) {
+    console.log('====================================')
+    console.log(prompt.value, promptTemplate.value, promptStore)
+    console.log('====================================')
     return promptTemplate.value.filter((item: { key: string }) => item.key.toLowerCase().includes(prompt.value.substring(1).toLowerCase())).map((obj: { value: any }) => {
       return {
         label: obj.value,
